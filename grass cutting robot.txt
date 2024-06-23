@@ -1,0 +1,160 @@
+#define BLYNK_TEMPLATE_ID "TMPL34grrH3fw"
+#define BLYNK_TEMPLATE_NAME "Grass Cutting Robot"
+#define BLYNK_AUTH_TOKEN "WEHso4jnQk6Jp5yuHIBCjyMwMeIQSE2J"
+
+//------------------------------------------------------------------------------
+
+char auth[] = BLYNK_AUTH_TOKEN;
+char ssid[] = "wifi";
+char pass[] = "12345678";
+
+//------------------------------------------------------------------------------
+
+#define BLYNK_PRINT Serial
+#include <ESP8266WiFi.h>
+#include <BlynkSimpleEsp8266.h>
+BlynkTimer timer;
+/////////////////////////////////////
+#define IN1 D1
+#define IN2 D2
+#define IN3 D3
+#define IN4 D4
+#define relay D5
+
+///////////////////////////////////////////////
+
+
+BLYNK_WRITE(V0) {
+  int pinValue0 = param.asInt(); // Get the value from the virtual pin V1
+  Serial.print("V0 value is: ");
+  Serial.println(pinValue0);
+
+  if(pinValue0==1)
+  {
+    forward();
+  }
+  else
+  {
+    stope();
+  }
+}
+//////////////////////////////////////////////
+
+BLYNK_WRITE(V1) {
+  int pinValue1 = param.asInt(); // Get the value from the virtual pin V1
+  Serial.print("V1 value is: ");
+  Serial.println(pinValue1);
+  if(pinValue1==1)
+  {
+    backward();
+  }
+  else
+  {
+    stope();
+  }
+  
+}
+
+///////////////////////////////////////////////
+
+BLYNK_WRITE(V2) {
+  int pinValue2 = param.asInt(); // Get the value from the virtual pin V1
+  Serial.print("V2 value is: ");
+  Serial.println(pinValue2);
+    if(pinValue2==1)
+  {
+    left();
+  }
+  else
+  {
+    stope();
+  }
+}
+/////////////////////////////////////////////////////////////////
+BLYNK_WRITE(V3) {
+  int pinValue3 = param.asInt(); // Get the value from the virtual pin V1
+  Serial.print("V3 value is: ");
+  Serial.println(pinValue3);
+    if(pinValue3==1)
+  {
+    right();
+  }
+  else
+  {
+    stope();
+  }
+}
+/////////////////////////////////////////////////////////////////
+BLYNK_WRITE(V4) {
+  int pinValue4 = param.asInt(); // Get the value from the virtual pin V1
+  Serial.print("V4 value is: ");
+  Serial.println(pinValue4);
+  if(pinValue4==1)
+  {
+    digitalWrite(relay,HIGH);
+  }
+  else
+  {
+    digitalWrite(relay,LOW);
+  }
+}
+/////////////////////////////////////////////////////////////////
+
+void setup()
+{
+  Serial.begin(115200);
+  
+  Blynk.begin(auth, ssid, pass);
+  delay(10);
+  pinMode(IN1, OUTPUT);
+  pinMode(IN2, OUTPUT);
+  pinMode(IN3, OUTPUT);
+  pinMode(IN4, OUTPUT);
+  pinMode(relay, OUTPUT);
+//  timer.setInterval(1000L, tsensor);
+
+ }
+ 
+//////////////////////////////////////////////////////
+
+void loop()
+{
+  Blynk.run();
+  
+}
+
+void forward()
+{
+        digitalWrite(IN1, HIGH);
+        digitalWrite(IN2, LOW);
+        digitalWrite(IN3, HIGH);
+        digitalWrite(IN4, LOW);
+}
+void backward()
+{
+        digitalWrite(IN1, LOW);
+        digitalWrite(IN2, HIGH);
+        digitalWrite(IN3, LOW);
+        digitalWrite(IN4, HIGH);
+}
+void right()
+{
+        digitalWrite(IN1, HIGH);
+        digitalWrite(IN2, LOW);
+        digitalWrite(IN3, LOW);
+        digitalWrite(IN4, HIGH);
+}
+void left()
+{
+        digitalWrite(IN1, LOW);
+        digitalWrite(IN2, HIGH);
+        digitalWrite(IN3, HIGH);
+        digitalWrite(IN4, LOW);
+}
+void stope()
+{
+        digitalWrite(IN1, LOW);
+        digitalWrite(IN2, LOW);
+        digitalWrite(IN3, LOW);
+        digitalWrite(IN4, LOW);
+}
